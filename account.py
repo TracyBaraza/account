@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class Account:
     def __init__(self,first_name,last_name):
         self.first_name = first_name
@@ -22,7 +24,14 @@ class Account:
 
     def deposit(self,y):
         deposit = y
-        self.deposits.append(y)
+        time = datetime.now()
+        object = {"time":time,"y":y}
+        self.deposits.append(object)
+
+
+
+        
+        # self.deposits.append(y)
         
         self.balance = self.balance + y
 
@@ -31,14 +40,21 @@ class Account:
 
 
     def show_deposits(self):
+
         for y in self.deposits:
-            print(y)
+            time = y["time"]
+            formatted_time = time.strftime("%c")
+            y= y["y"]
+            print("On {} you deposited {}".format(formatted_time,amount))
         
 
     def withdraw(self,x):
         withdraw = x
+        time = datetime.now()
+        object = {"time":time,"amount":x}
+        self.withdrawals.append(object)
 
-        self.withdrawals.append(x)
+         
 
 
         if x>self.balance:
@@ -57,7 +73,12 @@ class Account:
 
     def show_withdrawals(self):
         for x in self.withdrawals:
-            print(x)
+
+            time = x["time"]
+            formatted_time = time.strftime("%c")
+            amount= x["amount"]
+            print("On {} you withdrew {}".format(formatted_time,amount))
+            
     
 
     def show_balance(self):
@@ -65,18 +86,21 @@ class Account:
         text = "Dear {} {} your current balance is {}".format(self.first_name,self.last_name,self.balance)
         return text
 
-
-
     def give_loan(self,c):
          loan = c
+         total = 0
+         for y in self.deposits:
+            y = y["y"]
+            total+=y
 
-         if len(self.deposits)>=5 and c<sum(self.deposits) and c<(1/3*sum(self.deposits)) and self.loan==0:
+         if len(self.deposits)>=5 and c<total/3 and self.loan==0:
             self.loan = self.loan + c
             print("Dear customer your loan of {} has been approved".format(c))
 
 
 
     def repay_loan(self,d):
+        
         payment = d
 
         self.loan.extend(d)
